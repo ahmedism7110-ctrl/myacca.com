@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACCA Student Portal - Muhiyadin Mohamed</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        /* Login Form */
+        .login-container {
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+        }
+        
+        /* Dashboard */
+        .dashboard {
+            display: none;
+        }
+        
+        .welcome-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .welcome-section h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .progress-section {
+            margin-bottom: 30px;
+        }
+        
+        .progress-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .progress-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .progress-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #3498db;
+        }
+        
+        .progress-card.completed {
+            border-left-color: #2ecc71;
+        }
+        
+        .progress-card.pending {
+            border-left-color: #e74c3c;
+        }
+        
+        .progress-card h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .progress-card.completed h4 .status {
+            color: #2ecc71;
+        }
+        
+        .progress-card.pending h4 .status {
+            color: #e74c3c;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #ecf0f1;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #3498db;
+            border-radius: 5px;
+        }
+        
+        .progress-card.completed .progress-fill {
+            background: #2ecc71;
+            width: 100% !important;
+        }
+        
+        .progress-details {
+            display: flex;
+            justify-content: space-between;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .papers-list {
+            margin-top: 15px;
+        }
+        
+        .paper-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .paper-item:last-child {
+            border-bottom: none;
+        }
+        
+        .paper-item .status {
+            font-weight: 600;
+        }
+        
+        .paper-item.completed .status {
+            color: #2ecc71;
+        }
+        
+        .notification {
+            background: #fff4e6;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 30px;
+            border-left: 5px solid #ffa94d;
+        }
+        
+        .notification h4 {
+            color: #d35400;
+            margin-bottom: 10px;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .progress-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+        
+        .instructions {
+            background: #e8f4fc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .instructions h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .instructions ol {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ACCA Student Portal</h1>
+            <p>Track your progress and achieve your goals</p>
+        </div>
+        
+        <div class="content">
+            <!-- Login Form -->
+            <div class="login-container" id="loginContainer">
+                <h2>Login to Your Account</h2>
+                <p>Enter your credentials to access your progress</p>
+                
+                <form class="login-form" id="loginForm">
+                    <div class="form-group">
+                        <label for="username">Student ID</label>
+                        <input type="text" id="username" placeholder="Enter your student ID" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                    </div>
+                    
+                    <div class="error-message" id="errorMessage">
+                        Invalid credentials. Please try again.
+                    </div>
+                    
+                    <button type="submit" class="btn">Login</button>
+                </form>
+                
+                <div class="instructions">
+                    <h3>Demo Login Details:</h3>
+                    <p><strong>Username:</strong> 4786273</p>
+                    <p><strong>Password:</strong> maatir448</p>
+                </div>
+            </div>
+            
+            <!-- Dashboard -->
+            <div class="dashboard" id="dashboard">
+                <div class="welcome-section">
+                    <h2>Welcome, Muhiyadin Mohamed!</h2>
+                    <p>You have completed 13 ACCA papers and the ethics module. Keep up the good work!</p>
+                </div>
+                
+                <div class="progress-section">
+                    <h3>Your ACCA Progress</h3>
+                    
+                    <div class="progress-cards">
+                        <div class="progress-card completed">
+                            <h4>Knowledge Papers <span class="status">Completed</span></h4>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%"></div>
+                            </div>
+                            <div class="progress-details">
+                                <span>3 of 3 papers</span>
+                                <span>100%</span>
+                            </div>
+                            <div class="papers-list">
+                                <div class="paper-item completed">
+                                    <span>BT - Business and Technology</span>
+                                    <span class="status">Completed</span>
+                                </div>
+                                <div class="paper-item completed">
+                                    <span>MA - Management Accounting</span>
+                                    <span class="status">Completed</span>
+                                </div>
+                                <div class="paper-item completed">
+                                    <span>FA - Financial Accounting</span>
+                                    <span class="status">Completed</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-card completed">
+                            <h4>Skills Papers <span class="status">Completed</span></h4>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%"></div>
+                            </div>
+                            <div class="progress-details">
+                                <span>6 of 6 papers</span>
+                                <span>100%</span>
+                            </div>
+                            <div class="papers-list">
+                                <div class="paper-item completed">
+                                    <span>LW - Corporate and Business Law</span>
+                                    <span class="status">Completed</span>
+                                </div>
+                                <div class="paper-item completed">
+                                    <span>PM - Performance Management</span>
+                                    <span class="status">Completed</span>
+                                </div>
+                                <div class="paper-item completed">
+                                    <span>TX - Taxation</span>
+                                    <span class="status">Completed</span>
+                                </div>
+                                <div class="paper-item completed">
+                                    <span>FR - Financial Reporting</span>
+                                    <span class="status">Completed</span>
+                                </div>
+                                <div class="paper-item completed">
+                                    <span>AA - Audit and Assurance</span>
+                                    <span class="status">Completed</span>
+                                </div>
+                                <div class="paper-item completed">
+                                    <span>FM - Financial Management</span>
+                                    <span class="status">Completed</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-card completed">
+                            <h4>Professional Papers <span class="status">Completed</span></h4>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%"></div>
+                            </div>
+                            <div class="progress-details">
+                                <span>4 of 4 papers</span>
+                                <span>100%</span>
+                            </div>
+                            <div class="papers-list">
+                                <div class="paper-item completed">
+                                    <span>SBL - Strategic Business Leader</span>
+                                    <span class="status">Completed</span>
+                                </div>
+                                <div class="paper-item completed">
+                                    <span>SBR - Strategic Business Reporting</span>
+                                    <span class="status">Completed</span>
+                                </div>
+                                <div class="paper-item completed">
+                                    <span>AFM - Advanced Financial Management</span>
+                                    <span class="status">Completed</span>
+                                </div>
+                                <div class="paper-item completed">
+                                    <span>APM - Advanced Performance Management</span>
+                                    <span class="status">Completed</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-card completed">
+                            <h4>Ethics Module <span class="status">Completed</span></h4>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%"></div>
+                            </div>
+                            <div class="progress-details">
+                                <span>1 of 1 module</span>
+                                <span>100%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-card pending">
+                            <h4>Practical Experience <span class="status">Pending</span></h4>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <div class="progress-details">
+                                <span>0 of 36 months</span>
+                                <span>0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="notification">
+                    <h4>Next Steps</h4>
+                    <p>You have successfully completed all 13 ACCA papers and the ethics module. To become an ACCA member, you need to complete 36 months of relevant practical experience. Please contact your career advisor for guidance on fulfilling this requirement.</p>
+                </div>
+                
+                <button class="btn" id="logoutBtn" style="max-width: 200px; margin: 20px auto; display: block;">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const loginContainer = document.getElementById('loginContainer');
+            const dashboard = document.getElementById('dashboard');
+            const errorMessage = document.getElementById('errorMessage');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            // Check if user is already logged in (from previous session)
+            if(localStorage.getItem('loggedIn') === 'true') {
+                showDashboard();
+            }
+            
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                // Check credentials
+                if(username === '4786273' && password === 'maatir448') {
+                    // Save login state to localStorage
+                    localStorage.setItem('loggedIn', 'true');
+                    
+                    // Show dashboard
+                    showDashboard();
+                } else {
+                    // Show error message
+                    errorMessage.style.display = 'block';
+                }
+            });
+            
+            logoutBtn.addEventListener('click', function() {
+                // Remove login state
+                localStorage.removeItem('loggedIn');
+                
+                // Hide dashboard and show login form
+                dashboard.style.display = 'none';
+                loginContainer.style.display = 'block';
+                
+                // Clear form fields
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                errorMessage.style.display = 'none';
+            });
+            
+            function showDashboard() {
+                loginContainer.style.display = 'none';
+                dashboard.style.display = 'block';
+                errorMessage.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
